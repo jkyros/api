@@ -303,7 +303,7 @@ type MachineConfigPoolStatus struct {
 // MachineConfigPoolStatusConfiguration stores the current configuration for the pool, and
 // optionally also stores the list of MachineConfig objects used to generate the configuration.
 type MachineConfigPoolStatusConfiguration struct {
-	corev1.ObjectReference `json:",inline" protobuf:"bytes,1,opt,name=objectReference"`
+	corev1.ObjectReference `json:",inline"  protobuf:"bytes,2,rep,name=source"`
 
 	// source is the list of MachineConfig objects that were used to generate the single MachineConfig object specified in `content`.
 	// +optional
