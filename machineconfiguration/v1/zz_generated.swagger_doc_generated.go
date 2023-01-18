@@ -98,8 +98,6 @@ var map_ControllerConfigSpec = map[string]string{
 	"additionalTrustBundle":          "additionalTrustBundle is a certificate bundle that will be added to the nodes trusted certificate store.",
 	"pullSecret":                     "pullSecret is the default pull secret that needs to be installed on all machines.",
 	"images":                         "images is map of images that are used by the controller to render templates under ./templates/",
-	"baseOSContainerImage":           "BaseOSContainerImage is the new-format container image for operating system updates.",
-	"baseOSExtensionsContainerImage": "BaseOSExtensionsContainerImage is the matching extensions container for the new-format container",
 	"osImageURL":                     "osImageURL is the location of the container image that contains the OS update payload. Its value is taken from the data.osImageURL field on the machine-config-osimageurl ConfigMap.",
 	"releaseImage":                   "releaseImage is the image used when installing the cluster",
 	"proxy":                          "proxy holds the current proxy configuration for the nodes",
@@ -107,6 +105,8 @@ var map_ControllerConfigSpec = map[string]string{
 	"dns":                            "dns holds the cluster dns details",
 	"ipFamilies":                     "ipFamilies indicates the IP families in use by the cluster network",
 	"networkType":                    "networkType holds the type of network the cluster is using XXX: this is temporary and will be dropped as soon as possible in favor of a better support to start network related services the proper way. Nobody is also changing this once the cluster is up and running the first time, so, disallow regeneration if this changes.",
+	"baseOSContainerImage":           "BaseOSContainerImage is the new-format container image for operating system updates.",
+	"baseOSExtensionsContainerImage": "BaseOSExtensionsContainerImage is the matching extensions container for the new-format container",
 }
 
 func (ControllerConfigSpec) SwaggerDoc() map[string]string {
@@ -269,13 +269,14 @@ func (MachineConfigPoolStatusConfiguration) SwaggerDoc() map[string]string {
 }
 
 var map_MachineConfigSpec = map[string]string{
-	"":                "MachineConfigSpec is the spec for MachineConfig",
-	"osImageURL":      "OSImageURL specifies the remote location that will be used to fetch the OS.",
-	"config":          "Config is a Ignition Config object.",
-	"kernelArguments": "kernelArguments contains a list of kernel arguments to be added",
-	"extensions":      "extensions contains a list of additional features that can be enabled on host",
-	"fips":            "fips controls FIPS mode",
-	"kernelType":      "kernelType contains which kernel we want to be running like default (traditional), realtime.",
+	"":                               "MachineConfigSpec is the spec for MachineConfig",
+	"osImageURL":                     "OSImageURL specifies the remote location that will be used to fetch the OS.",
+	"config":                         "Config is a Ignition Config object.",
+	"kernelArguments":                "kernelArguments contains a list of kernel arguments to be added",
+	"extensions":                     "extensions contains a list of additional features that can be enabled on host",
+	"fips":                           "fips controls FIPS mode",
+	"kernelType":                     "kernelType contains which kernel we want to be running like default (traditional), realtime.",
+	"baseOSExtensionsContainerImage": "BaseOSExtensionsContainerImage specifies the remote location that will be used to fetch the extensions container matching a new-format OS image",
 }
 
 func (MachineConfigSpec) SwaggerDoc() map[string]string {

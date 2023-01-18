@@ -73,12 +73,6 @@ type ControllerConfigSpec struct {
 	// images is map of images that are used by the controller to render templates under ./templates/
 	Images map[string]string `json:"images" protobuf:"bytes,10,rep,name=images"`
 
-	// BaseOSContainerImage is the new-format container image for operating system updates.
-	BaseOSContainerImage string `json:"baseOSContainerImage"`
-
-	// BaseOSExtensionsContainerImage is the matching extensions container for the new-format container
-	BaseOSExtensionsContainerImage string `json:"baseOSExtensionsContainerImage"`
-
 	// osImageURL is the location of the container image that contains the OS update payload.
 	// Its value is taken from the data.osImageURL field on the machine-config-osimageurl ConfigMap.
 	OSImageURL string `json:"osImageURL" protobuf:"bytes,11,opt,name=osImageURL"`
@@ -107,6 +101,14 @@ type ControllerConfigSpec struct {
 	// Nobody is also changing this once the cluster is up and running the first time, so, disallow
 	// regeneration if this changes.
 	NetworkType string `json:"networkType,omitempty" protobuf:"bytes,17,opt,name=networkType"`
+
+	// BaseOSContainerImage is the new-format container image for operating system updates.
+	BaseOSContainerImage string `json:"baseOSContainerImage" protobuf:"bytes,18,opt,name=baseOSContainerImage"`
+
+	// BaseOSExtensionsContainerImage is the matching extensions container for the new-format container
+	BaseOSExtensionsContainerImage string `json:"baseOSExtensionsContainerImage" protobuf="bytes,19,opt,name=baseOSExtensionsContainerImage`
+
+
 }
 
 // IPFamiliesType indicates whether the cluster network is IPv4-only, IPv6-only, or dual-stack
@@ -212,6 +214,10 @@ type MachineConfigSpec struct {
 	// kernelType contains which kernel we want to be running like default
 	// (traditional), realtime.
 	KernelType string `json:"kernelType" protobuf:"bytes,6,opt,name=kernelType"`
+
+	// BaseOSExtensionsContainerImage specifies the remote location that will be used
+	// to fetch the extensions container matching a new-format OS image
+	BaseOSExtensionsContainerImage string `json:"baseOSExtensionsContainerImage" protobuf:"bytes,7,opt,name=baseOSExtensionsContainerImage"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
