@@ -102,11 +102,15 @@ type ControllerConfigSpec struct {
 	// regeneration if this changes.
 	NetworkType string `json:"networkType,omitempty" protobuf:"bytes,17,opt,name=networkType"`
 
+	// Network contains additional network related information
+	// +nullable
+	Network *NetworkInfo `json:"network" protobuf:"bytes,18,opt,name=network"`
+
 	// BaseOSContainerImage is the new-format container image for operating system updates.
-	BaseOSContainerImage string `json:"baseOSContainerImage" protobuf:"bytes,18,opt,name=baseOSContainerImage"`
+	BaseOSContainerImage string `json:"baseOSContainerImage" protobuf:"bytes,19,opt,name=baseOSContainerImage"`
 
 	// BaseOSExtensionsContainerImage is the matching extensions container for the new-format container
-	BaseOSExtensionsContainerImage string `json:"baseOSExtensionsContainerImage" protobuf="bytes,19,opt,name=baseOSExtensionsContainerImage`
+	BaseOSExtensionsContainerImage string `json:"baseOSExtensionsContainerImage" protobuf="bytes,20,opt,name=baseOSExtensionsContainerImage`
 
 
 }
@@ -119,6 +123,13 @@ const (
 	IPFamiliesIPv6      IPFamiliesType = "IPv6"
 	IPFamiliesDualStack IPFamiliesType = "DualStack"
 )
+
+// Network contains network related configuration
+type NetworkInfo struct {
+	// MTUMigration contains the MTU migration configuration.
+	// +nullable
+	MTUMigration *configv1.MTUMigration `json:"mtuMigration"`
+}
 
 // ControllerConfigStatus is the status for ControllerConfig
 type ControllerConfigStatus struct {
@@ -512,7 +523,19 @@ type ContainerRuntimeConfiguration struct {
 	// overlaySize specifies the maximum size of a container image.
 	// This flag can be used to set quota on the size of container images. (default: 10GB)
 	OverlaySize resource.Quantity `json:"overlaySize,omitempty" protobuf:"bytes,4,opt,name=overlaySize"`
+
+        // defaultRuntime is the name of the OCI runtime to be used as the default.
+	DefaultRuntime ContainerRuntimeDefaultRuntime `json:"defaultRuntime,omitempty" protobuf:"bytes,5,opt,name=defaultRuntime"`
 }
+
+type ContainerRuntimeDefaultRuntime string
+
+const (
+	ContainerRuntimeDefaultRuntimeEmpty   = ""
+	ContainerRuntimeDefaultRuntimeRunc    = "runc"
+	ContainerRuntimeDefaultRuntimeCrun    = "crun"
+	ContainerRuntimeDefaultRuntimeDefault = ContainerRuntimeDefaultRuntimeRunc
+)
 
 // ContainerRuntimeConfigStatus defines the observed state of a ContainerRuntimeConfig
 type ContainerRuntimeConfigStatus struct {

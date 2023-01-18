@@ -58,6 +58,7 @@ spec:
                 - infra
                 - ipFamilies
                 - kubeAPIServerServingCAData
+                - network
                 - osImageURL
                 - proxy
                 - releaseImage
@@ -762,6 +763,46 @@ spec:
                   description: kubeAPIServerServingCAData managed Kubelet to API Server Cert... Rotated automatically
                   type: string
                   format: byte
+                network:
+                  description: Network contains additional network related information
+                  type: object
+                  required:
+                    - mtuMigration
+                  properties:
+                    mtuMigration:
+                      description: MTUMigration contains the MTU migration configuration.
+                      type: object
+                      properties:
+                        machine:
+                          description: Machine contains MTU migration configuration for the machine's uplink.
+                          type: object
+                          properties:
+                            from:
+                              description: From is the MTU to migrate from.
+                              type: integer
+                              format: int32
+                              minimum: 0
+                            to:
+                              description: To is the MTU to migrate to.
+                              type: integer
+                              format: int32
+                              minimum: 0
+                        network:
+                          description: Network contains MTU migration configuration for the default network.
+                          type: object
+                          properties:
+                            from:
+                              description: From is the MTU to migrate from.
+                              type: integer
+                              format: int32
+                              minimum: 0
+                            to:
+                              description: To is the MTU to migrate to.
+                              type: integer
+                              format: int32
+                              minimum: 0
+                      nullable: true
+                  nullable: true
                 networkType:
                   description: 'networkType holds the type of network the cluster is using XXX: this is temporary and will be dropped as soon as possible in favor of a better support to start network related services the proper way. Nobody is also changing this once the cluster is up and running the first time, so, disallow regeneration if this changes.'
                   type: string

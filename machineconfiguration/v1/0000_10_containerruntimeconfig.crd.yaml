@@ -48,6 +48,9 @@ spec:
                   description: ContainerRuntimeConfiguration defines the tuneables of the container runtime
                   type: object
                   properties:
+                    defaultRuntime:
+                      description: defaultRuntime is the name of the OCI runtime to be used as the default.
+                      type: string
                     logLevel:
                       description: logLevel specifies the verbosity of the logs based on the level it is set to. Options are fatal, panic, error, warn, info, and debug.
                       type: string

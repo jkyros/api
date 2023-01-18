@@ -59,11 +59,12 @@ func (ContainerRuntimeConfigStatus) SwaggerDoc() map[string]string {
 }
 
 var map_ContainerRuntimeConfiguration = map[string]string{
-	"":            "ContainerRuntimeConfiguration defines the tuneables of the container runtime",
-	"pidsLimit":   "pidsLimit specifies the maximum number of processes allowed in a container",
-	"logLevel":    "logLevel specifies the verbosity of the logs based on the level it is set to. Options are fatal, panic, error, warn, info, and debug.",
-	"logSizeMax":  "logSizeMax specifies the Maximum size allowed for the container log file. Negative numbers indicate that no size limit is imposed. If it is positive, it must be >= 8192 to match/exceed conmon's read buffer.",
-	"overlaySize": "overlaySize specifies the maximum size of a container image. This flag can be used to set quota on the size of container images. (default: 10GB)",
+	"":               "ContainerRuntimeConfiguration defines the tuneables of the container runtime",
+	"pidsLimit":      "pidsLimit specifies the maximum number of processes allowed in a container",
+	"logLevel":       "logLevel specifies the verbosity of the logs based on the level it is set to. Options are fatal, panic, error, warn, info, and debug.",
+	"logSizeMax":     "logSizeMax specifies the Maximum size allowed for the container log file. Negative numbers indicate that no size limit is imposed. If it is positive, it must be >= 8192 to match/exceed conmon's read buffer.",
+	"overlaySize":    "overlaySize specifies the maximum size of a container image. This flag can be used to set quota on the size of container images. (default: 10GB)",
+	"defaultRuntime": "defaultRuntime is the name of the OCI runtime to be used as the default.",
 }
 
 func (ContainerRuntimeConfiguration) SwaggerDoc() map[string]string {
@@ -105,6 +106,7 @@ var map_ControllerConfigSpec = map[string]string{
 	"dns":                            "dns holds the cluster dns details",
 	"ipFamilies":                     "ipFamilies indicates the IP families in use by the cluster network",
 	"networkType":                    "networkType holds the type of network the cluster is using XXX: this is temporary and will be dropped as soon as possible in favor of a better support to start network related services the proper way. Nobody is also changing this once the cluster is up and running the first time, so, disallow regeneration if this changes.",
+	"network":                        "Network contains additional network related information",
 	"baseOSContainerImage":           "BaseOSContainerImage is the new-format container image for operating system updates.",
 	"baseOSExtensionsContainerImage": "BaseOSExtensionsContainerImage is the matching extensions container for the new-format container",
 }
@@ -281,6 +283,15 @@ var map_MachineConfigSpec = map[string]string{
 
 func (MachineConfigSpec) SwaggerDoc() map[string]string {
 	return map_MachineConfigSpec
+}
+
+var map_NetworkInfo = map[string]string{
+	"":             "Network contains network related configuration",
+	"mtuMigration": "MTUMigration contains the MTU migration configuration.",
+}
+
+func (NetworkInfo) SwaggerDoc() map[string]string {
+	return map_NetworkInfo
 }
 
 // AUTO-GENERATED FUNCTIONS END HERE
