@@ -73,6 +73,12 @@ type ControllerConfigSpec struct {
 	// images is map of images that are used by the controller to render templates under ./templates/
 	Images map[string]string `json:"images" protobuf:"bytes,10,rep,name=images"`
 
+	// BaseOSContainerImage is the new-format container image for operating system updates.
+	BaseOSContainerImage string `json:"baseOSContainerImage"`
+
+	// BaseOSExtensionsContainerImage is the matching extensions container for the new-format container
+	BaseOSExtensionsContainerImage string `json:"baseOSExtensionsContainerImage"`
+
 	// osImageURL is the location of the container image that contains the OS update payload.
 	// Its value is taken from the data.osImageURL field on the machine-config-osimageurl ConfigMap.
 	OSImageURL string `json:"osImageURL" protobuf:"bytes,11,opt,name=osImageURL"`
@@ -303,7 +309,7 @@ type MachineConfigPoolStatus struct {
 // MachineConfigPoolStatusConfiguration stores the current configuration for the pool, and
 // optionally also stores the list of MachineConfig objects used to generate the configuration.
 type MachineConfigPoolStatusConfiguration struct {
-	corev1.ObjectReference `json:",inline"  protobuf:"bytes,2,rep,name=source"`
+	corev1.ObjectReference `json:",inline"  protobuf:"bytes,2,rep,name=objectReference"`
 
 	// source is the list of MachineConfig objects that were used to generate the single MachineConfig object specified in `content`.
 	// +optional

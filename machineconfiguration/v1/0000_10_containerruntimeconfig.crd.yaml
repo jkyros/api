@@ -27,7 +27,7 @@ spec:
         status: {}
       schema:
         openAPIV3Schema:
-          description: ContainerRuntimeConfig describes a customized Container Runtime configuration.
+          description: "ContainerRuntimeConfig describes a customized Container Runtime configuration. \n Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer)."
           type: object
           required:
             - spec
@@ -43,11 +43,9 @@ spec:
             spec:
               description: ContainerRuntimeConfigSpec defines the desired state of ContainerRuntimeConfig
               type: object
-              required:
-                - containerRuntimeConfig
               properties:
                 containerRuntimeConfig:
-                  description: ContainerRuntimeConfiguration defines the tuneables of the container runtime. It's important to note that, since the fields of the ContainerRuntimeConfiguration are directly read by the upstream kubernetes golang client, the validation of those values is handled directly by that golang client which is outside of the controller for ContainerRuntimeConfiguration. Please ensure the valid values are used for those fields as invalid values may render cluster nodes unusable.
+                  description: ContainerRuntimeConfiguration defines the tuneables of the container runtime
                   type: object
                   properties:
                     logLevel:
@@ -55,10 +53,18 @@ spec:
                       type: string
                     logSizeMax:
                       description: logSizeMax specifies the Maximum size allowed for the container log file. Negative numbers indicate that no size limit is imposed. If it is positive, it must be >= 8192 to match/exceed conmon's read buffer.
-                      type: string
+                      pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                      anyOf:
+                        - type: integer
+                        - type: string
+                      x-kubernetes-int-or-string: true
                     overlaySize:
                       description: 'overlaySize specifies the maximum size of a container image. This flag can be used to set quota on the size of container images. (default: 10GB)'
-                      type: string
+                      pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                      anyOf:
+                        - type: integer
+                        - type: string
+                      x-kubernetes-int-or-string: true
                     pidsLimit:
                       description: pidsLimit specifies the maximum number of processes allowed in a container
                       type: integer
@@ -93,6 +99,7 @@ spec:
                       type: object
                       additionalProperties:
                         type: string
+                  x-kubernetes-map-type: atomic
             status:
               description: ContainerRuntimeConfigStatus defines the observed state of a ContainerRuntimeConfig
               type: object
@@ -103,6 +110,10 @@ spec:
                   items:
                     description: ContainerRuntimeConfigCondition defines the state of the ContainerRuntimeConfig
                     type: object
+                    required:
+                      - lastTransitionTime
+                      - status
+                      - type
                     properties:
                       lastTransitionTime:
                         description: lastTransitionTime is the time of the last update to the current status object.

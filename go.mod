@@ -1,4 +1,4 @@
-module github.com/jkyros/api
+module github.com/openshift/api
 
 go 1.18
 
