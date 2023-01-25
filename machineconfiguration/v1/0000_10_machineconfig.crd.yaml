@@ -63,14 +63,6 @@ spec:
             spec:
               description: MachineConfigSpec is the spec for MachineConfig
               type: object
-              required:
-                - baseOSExtensionsContainerImage
-                - config
-                - extensions
-                - fips
-                - kernelArguments
-                - kernelType
-                - osImageURL
               properties:
                 baseOSExtensionsContainerImage:
                   description: BaseOSExtensionsContainerImage specifies the remote location that will be used to fetch the extensions container matching a new-format OS image

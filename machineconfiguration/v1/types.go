@@ -111,8 +111,6 @@ type ControllerConfigSpec struct {
 
 	// BaseOSExtensionsContainerImage is the matching extensions container for the new-format container
 	BaseOSExtensionsContainerImage string `json:"baseOSExtensionsContainerImage" protobuf="bytes,20,opt,name=baseOSExtensionsContainerImage`
-
-
 }
 
 // IPFamiliesType indicates whether the cluster network is IPv4-only, IPv6-only, or dual-stack
@@ -210,24 +208,31 @@ type MachineConfig struct {
 type MachineConfigSpec struct {
 	// OSImageURL specifies the remote location that will be used to
 	// fetch the OS.
+	// +optional
 	OSImageURL string `json:"osImageURL" protobuf:"bytes,1,opt,name=osImageURL"`
 	// Config is a Ignition Config object.
+	// +optional
 	Config runtime.RawExtension `json:"config" protobuf:"bytes,2,opt,name=config"`
 
 	// kernelArguments contains a list of kernel arguments to be added
 	// +nullable
+	// +optional
 	KernelArguments []string `json:"kernelArguments" protobuf:"bytes,3,rep,name=kernelArguments"`
 	// extensions contains a list of additional features that can be enabled on host
+	// +optional
 	Extensions []string `json:"extensions" protobuf:"bytes,4,rep,name=extensions"`
 
 	// fips controls FIPS mode
+	// +optional
 	FIPS bool `json:"fips" protobuf:"varint,5,opt,name=fips"`
 	// kernelType contains which kernel we want to be running like default
 	// (traditional), realtime.
+	// +optional
 	KernelType string `json:"kernelType" protobuf:"bytes,6,opt,name=kernelType"`
 
 	// BaseOSExtensionsContainerImage specifies the remote location that will be used
 	// to fetch the extensions container matching a new-format OS image
+	// +optional
 	BaseOSExtensionsContainerImage string `json:"baseOSExtensionsContainerImage" protobuf:"bytes,7,opt,name=baseOSExtensionsContainerImage"`
 }
 
@@ -524,7 +529,7 @@ type ContainerRuntimeConfiguration struct {
 	// This flag can be used to set quota on the size of container images. (default: 10GB)
 	OverlaySize resource.Quantity `json:"overlaySize,omitempty" protobuf:"bytes,4,opt,name=overlaySize"`
 
-        // defaultRuntime is the name of the OCI runtime to be used as the default.
+	// defaultRuntime is the name of the OCI runtime to be used as the default.
 	DefaultRuntime ContainerRuntimeDefaultRuntime `json:"defaultRuntime,omitempty" protobuf:"bytes,5,opt,name=defaultRuntime"`
 }
 
