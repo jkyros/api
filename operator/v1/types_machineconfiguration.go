@@ -8,7 +8,7 @@ import (
 // +genclient:nonNamespaced
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// MachineConfiguration provides information to configure an operator to manage machine-config-operator.
+// MachineConfiguration provides information to configure an operator to manage Machine Configuration.
 //
 // Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
 // +openshift:compatibility-gen:level=1
@@ -19,12 +19,12 @@ type MachineConfiguration struct {
 	// More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
 	metav1.ObjectMeta `json:"metadata"`
 
-	// spec is the specification of the desired behavior of the Kubernetes API Server
+	// spec is the specification of the desired behavior of the Machine Config Operator
 	// +kubebuilder:validation:Required
 	// +required
 	Spec MachineConfigurationSpec `json:"spec"`
 
-	// status is the most recently observed status of the Kubernetes API Server
+	// status is the most recently observed status of the Machine Config Operator
 	// +optional
 	Status MachineConfigurationStatus `json:"status"`
 }
@@ -43,7 +43,7 @@ type MachineConfigurationStatus struct {
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// KubeAPIServerList is a collection of items
+// MachineConfigurationList is a collection of items
 //
 // Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
 // +openshift:compatibility-gen:level=1
