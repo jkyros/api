@@ -76,46 +76,45 @@ type ControllerConfigSpec struct {
 	// images is map of images that are used by the controller to render templates under ./templates/
 	Images map[string]string `json:"images" protobuf:"bytes,10,rep,name=images"`
 
+	// BaseOSContainerImage is the new-format container image for operating system updates.
+	BaseOSContainerImage string `json:"baseOSContainerImage" protobuf:"bytes,11,opt,name=baseOSContainerImage"`
+
+	// BaseOSExtensionsContainerImage is the matching extensions container for the new-format container
+	BaseOSExtensionsContainerImage string `json:"baseOSExtensionsContainerImage" protobuf:"bytes,12,opt,name=baseOSExtensionsContainerImage"`
+
 	// OSImageURL is the old-format container image that contains the OS update payload.
-	OSImageURL string `json:"osImageURL" protobuf:"bytes,11,opt,name=osImageURL"`
+	OSImageURL string `json:"osImageURL" protobuf:"bytes,13,opt,name=osImageURL"`
 
 	// releaseImage is the image used when installing the cluster
-	ReleaseImage string `json:"releaseImage" protobuf:"bytes,12,opt,name=releaseImage"`
+	ReleaseImage string `json:"releaseImage" protobuf:"bytes,14,opt,name=releaseImage"`
 
 	// proxy holds the current proxy configuration for the nodes
 	// +nullable
-	Proxy *configv1.ProxyStatus `json:"proxy" protobuf:"bytes,13,opt,name=proxy"`
+	Proxy *configv1.ProxyStatus `json:"proxy" protobuf:"bytes,15,opt,name=proxy"`
 
 	// infra holds the infrastructure details
 	// +kubebuilder:validation:EmbeddedResource
-
 	// +nullable
-	Infra *configv1.Infrastructure `json:"infra" protobuf:"bytes,14,opt,name=infra"`
+	Infra *configv1.Infrastructure `json:"infra" protobuf:"bytes,16,opt,name=infra"`
 
 	// dns holds the cluster dns details
 	// +kubebuilder:validation:EmbeddedResource
 	// +nullable
-	DNS *configv1.DNS `json:"dns" protobuf:"bytes,15,opt,name=dns"`
+	DNS *configv1.DNS `json:"dns" protobuf:"bytes,17,opt,name=dns"`
 
 	// ipFamilies indicates the IP families in use by the cluster network
-	IPFamilies IPFamiliesType `json:"ipFamilies" protobuf:"bytes,16,opt,name=ipFamilies,casttype=IPFamiliesType"`
+	IPFamilies IPFamiliesType `json:"ipFamilies" protobuf:"bytes,18,opt,name=ipFamilies,casttype=IPFamiliesType"`
 
 	// networkType holds the type of network the cluster is using
 	// XXX: this is temporary and will be dropped as soon as possible in favor of a better support
 	// to start network related services the proper way.
 	// Nobody is also changing this once the cluster is up and running the first time, so, disallow
 	// regeneration if this changes.
-	NetworkType string `json:"networkType,omitempty" protobuf:"bytes,17,opt,name=networkType"`
+	NetworkType string `json:"networkType,omitempty" protobuf:"bytes,19,opt,name=networkType"`
 
 	// Network contains additional network related information
 	// +nullable
-	Network *NetworkInfo `json:"network" protobuf:"bytes,18,opt,name=network"`
-
-	// BaseOSContainerImage is the new-format container image for operating system updates.
-	BaseOSContainerImage string `json:"baseOSContainerImage" protobuf:"bytes,19,opt,name=baseOSContainerImage"`
-
-	// BaseOSExtensionsContainerImage is the matching extensions container for the new-format container
-	BaseOSExtensionsContainerImage string `json:"baseOSExtensionsContainerImage" protobuf="bytes,20,opt,name=baseOSExtensionsContainerImage`
+	Network *NetworkInfo `json:"network" protobuf:"bytes,20,opt,name=network"`
 }
 
 // IPFamiliesType indicates whether the cluster network is IPv4-only, IPv6-only, or dual-stack
@@ -422,8 +421,11 @@ type KubeletConfig struct {
 
 // KubeletConfigSpec defines the desired state of KubeletConfig
 type KubeletConfigSpec struct {
-	AutoSizingReserved        *bool                 `json:"autoSizingReserved,omitempty" protobuf:"varint,1,opt,name=autoSizingReserved"`
-	LogLevel                  *int32                `json:"logLevel,omitempty" protobuf:"varint,2,opt,name=logLevel"`
+	AutoSizingReserved *bool  `json:"autoSizingReserved,omitempty" protobuf:"varint,1,opt,name=autoSizingReserved"`
+	LogLevel           *int32 `json:"logLevel,omitempty" protobuf:"varint,2,opt,name=logLevel"`
+
+	// MachineConfigPoolSelector selects which pools the KubeletConfig shoud apply to.
+	// A nil selector will result in no pools being selected.
 	MachineConfigPoolSelector *metav1.LabelSelector `json:"machineConfigPoolSelector,omitempty" protobuf:"bytes,3,opt,name=machineConfigPoolSelector"`
 	// kubeletConfig fields are defined in kubernetes upstream. Please refer to the types defined in the version/commit used by
 	// OpenShift of the upstream kubernetes. It's important to note that, since the fields of the kubelet configuration are directly fetched from
@@ -513,6 +515,8 @@ type ContainerRuntimeConfig struct {
 
 // ContainerRuntimeConfigSpec defines the desired state of ContainerRuntimeConfig
 type ContainerRuntimeConfigSpec struct {
+	// MachineConfigPoolSelector selects which pools the ContainerRuntimeConfig shoud apply to.
+	// A nil selector will result in no pools being selected.
 	MachineConfigPoolSelector *metav1.LabelSelector          `json:"machineConfigPoolSelector,omitempty" protobuf:"bytes,1,opt,name=machineConfigPoolSelector"`
 	ContainerRuntimeConfig    *ContainerRuntimeConfiguration `json:"containerRuntimeConfig,omitempty" protobuf:"bytes,2,opt,name=containerRuntimeConfig"`
 }

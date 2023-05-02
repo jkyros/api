@@ -73,7 +73,7 @@ spec:
                       type: integer
                       format: int64
                 machineConfigPoolSelector:
-                  description: A label selector is a label query over a set of resources. The result of matchLabels and matchExpressions are ANDed. An empty label selector matches all objects. A null label selector matches no objects.
+                  description: MachineConfigPoolSelector selects which pools the ContainerRuntimeConfig shoud apply to. A nil selector will result in no pools being selected.
                   type: object
                   properties:
                     matchExpressions:
