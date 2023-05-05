@@ -30,6 +30,10 @@ type ControllerConfig struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
 
+	// TODO(jkyros): inconsistent historical generation resulted in the controllerconfig CRD being
+	// generated with all fields required, while everything else was generated with optional
+
+	// +kubebuilder:validation:Required
 	// +required
 	Spec ControllerConfigSpec `json:"spec" protobuf:"bytes,2,opt,name=spec"`
 	// +optional
@@ -39,9 +43,13 @@ type ControllerConfig struct {
 // ControllerConfigSpec is the spec for ControllerConfig resource.
 type ControllerConfigSpec struct {
 	// clusterDNSIP is the cluster DNS IP address
+	// +kubebuilder:validation:Required
+	// +required
 	ClusterDNSIP string `json:"clusterDNSIP" protobuf:"bytes,1,opt,name=clusterDNSIP"`
 
 	// cloudProviderConfig is the configuration for the given cloud provider
+	// +kubebuilder:validation:Required
+	// +required
 	CloudProviderConfig string `json:"cloudProviderConfig" protobuf:"bytes,2,opt,name=cloudProviderConfig"`
 
 	// platform is deprecated, use Infra.Status.PlatformStatus.Type instead
@@ -53,17 +61,25 @@ type ControllerConfigSpec struct {
 	// TODO: Use string for CA data
 
 	// kubeAPIServerServingCAData managed Kubelet to API Server Cert... Rotated automatically
+	// +kubebuilder:validation:Required
+	// +required
 	KubeAPIServerServingCAData []byte `json:"kubeAPIServerServingCAData" protobuf:"bytes,5,opt,name=kubeAPIServerServingCAData"`
 
 	// rootCAData specifies the root CA data
+	// +kubebuilder:validation:Required
+	// +required
 	RootCAData []byte `json:"rootCAData" protobuf:"bytes,6,opt,name=rootCAData"`
 
 	// cloudProvider specifies the cloud provider CA data
+	// +kubebuilder:validation:Required
+	// +required
 	// +nullable
 	CloudProviderCAData []byte `json:"cloudProviderCAData" protobuf:"bytes,7,opt,name=cloudProviderCAData"`
 
 	// additionalTrustBundle is a certificate bundle that will be added to the nodes
 	// trusted certificate store.
+	// +kubebuilder:validation:Required
+	// +required
 	// +nullable
 	AdditionalTrustBundle []byte `json:"additionalTrustBundle" protobuf:"bytes,8,opt,name=additionalTrustBundle"`
 
@@ -74,35 +90,49 @@ type ControllerConfigSpec struct {
 	PullSecret *corev1.ObjectReference `json:"pullSecret,omitempty" protobuf:"bytes,9,opt,name=pullSecret"`
 
 	// images is map of images that are used by the controller to render templates under ./templates/
+	// +kubebuilder:validation:Required
+	// +required
 	Images map[string]string `json:"images" protobuf:"bytes,10,rep,name=images"`
 
 	// BaseOSContainerImage is the new-format container image for operating system updates.
+	// +kubebuilder:validation:Required
+	// +required
 	BaseOSContainerImage string `json:"baseOSContainerImage" protobuf:"bytes,11,opt,name=baseOSContainerImage"`
 
 	// BaseOSExtensionsContainerImage is the matching extensions container for the new-format container
+	// +optional
 	BaseOSExtensionsContainerImage string `json:"baseOSExtensionsContainerImage" protobuf:"bytes,12,opt,name=baseOSExtensionsContainerImage"`
 
 	// OSImageURL is the old-format container image that contains the OS update payload.
+	// +optional
 	OSImageURL string `json:"osImageURL" protobuf:"bytes,13,opt,name=osImageURL"`
 
 	// releaseImage is the image used when installing the cluster
+	// +kubebuilder:validation:Required
+	// +required
 	ReleaseImage string `json:"releaseImage" protobuf:"bytes,14,opt,name=releaseImage"`
 
 	// proxy holds the current proxy configuration for the nodes
+	// +kubebuilder:validation:Required
+	// +required
 	// +nullable
 	Proxy *configv1.ProxyStatus `json:"proxy" protobuf:"bytes,15,opt,name=proxy"`
 
 	// infra holds the infrastructure details
 	// +kubebuilder:validation:EmbeddedResource
+	// +kubebuilder:validation:Required
 	// +nullable
 	Infra *configv1.Infrastructure `json:"infra" protobuf:"bytes,16,opt,name=infra"`
 
 	// dns holds the cluster dns details
 	// +kubebuilder:validation:EmbeddedResource
+	// +kubebuilder:validation:Required
 	// +nullable
 	DNS *configv1.DNS `json:"dns" protobuf:"bytes,17,opt,name=dns"`
 
 	// ipFamilies indicates the IP families in use by the cluster network
+	// +kubebuilder:validation:Required
+	// +required
 	IPFamilies IPFamiliesType `json:"ipFamilies" protobuf:"bytes,18,opt,name=ipFamilies,casttype=IPFamiliesType"`
 
 	// networkType holds the type of network the cluster is using
@@ -113,6 +143,8 @@ type ControllerConfigSpec struct {
 	NetworkType string `json:"networkType,omitempty" protobuf:"bytes,19,opt,name=networkType"`
 
 	// Network contains additional network related information
+	// +kubebuilder:validation:Required
+	// +required
 	// +nullable
 	Network *NetworkInfo `json:"network" protobuf:"bytes,20,opt,name=network"`
 }
@@ -130,6 +162,8 @@ const (
 // Network contains network related configuration
 type NetworkInfo struct {
 	// MTUMigration contains the MTU migration configuration.
+	// +kubebuilder:validation:Required
+	// +required
 	// +nullable
 	MTUMigration *configv1.MTUMigration `json:"mtuMigration" protobuf:"bytes,1,rep,name=mtuMigration"`
 }
@@ -148,12 +182,18 @@ type ControllerConfigStatus struct {
 // ControllerConfigStatusCondition contains condition information for ControllerConfigStatus
 type ControllerConfigStatusCondition struct {
 	// type specifies the state of the operator's reconciliation functionality.
+	// +kubebuilder:validation:Required
+	// +required
 	Type ControllerConfigStatusConditionType `json:"type" protobuf:"bytes,1,opt,name=type,casttype=ControllerConfigStatusConditionType"`
 
 	// status of the condition, one of True, False, Unknown.
+	// +kubebuilder:validation:Required
+	// +required
 	Status corev1.ConditionStatus `json:"status" protobuf:"bytes,2,opt,name=status,casttype=k8s.io/api/core/v1.ConditionStatus"`
 
 	// lastTransitionTime is the time of the last update to the current status object.
+	// +kubebuilder:validation:Required
+	// +required
 	// +nullable
 	LastTransitionTime metav1.Time `json:"lastTransitionTime" protobuf:"bytes,3,opt,name=lastTransitionTime"`
 
@@ -269,6 +309,7 @@ type MachineConfigPool struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
 
+	// +kubebuilder:validation:Required
 	// +required
 	Spec MachineConfigPoolSpec `json:"spec" protobuf:"bytes,2,opt,name=spec"`
 	// +optional
@@ -339,7 +380,7 @@ type MachineConfigPoolStatus struct {
 // MachineConfigPoolStatusConfiguration stores the current configuration for the pool, and
 // optionally also stores the list of MachineConfig objects used to generate the configuration.
 type MachineConfigPoolStatusConfiguration struct {
-	corev1.ObjectReference `json:",inline"  protobuf:"bytes,2,rep,name=objectReference"`
+	corev1.ObjectReference `json:",inline"  protobuf:"bytes,1,rep,name=objectReference"`
 
 	// source is the list of MachineConfig objects that were used to generate the single MachineConfig object specified in `content`.
 	// +optional
@@ -416,6 +457,7 @@ type KubeletConfig struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
 
+	// +kubebuilder:validation:Required
 	// +required
 	Spec KubeletConfigSpec `json:"spec" protobuf:"bytes,2,opt,name=spec"`
 	// +optional
@@ -510,6 +552,7 @@ type ContainerRuntimeConfig struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty" protobuf:"bytes,1,opt,name=metadata"`
 
+	// +kubebuilder:validation:Required
 	// +required
 	Spec ContainerRuntimeConfigSpec `json:"spec" protobuf:"bytes,2,opt,name=spec"`
 	// +optional
