@@ -87,9 +87,6 @@ spec:
             spec:
               description: MachineConfigPoolSpec is the spec for MachineConfigPool resource.
               type: object
-              required:
-                - configuration
-                - paused
               properties:
                 configuration:
                   description: The targeted MachineConfig object for the machine config pool.
@@ -220,13 +217,6 @@ spec:
             status:
               description: MachineConfigPoolStatus is the status for MachineConfigPool resource.
               type: object
-              required:
-                - configuration
-                - degradedMachineCount
-                - machineCount
-                - readyMachineCount
-                - unavailableMachineCount
-                - updatedMachineCount
               properties:
                 conditions:
                   description: conditions represents the latest available observations of current state.
@@ -234,12 +224,6 @@ spec:
                   items:
                     description: MachineConfigPoolCondition contains condition information for an MachineConfigPool.
                     type: object
-                    required:
-                      - lastTransitionTime
-                      - message
-                      - reason
-                      - status
-                      - type
                     properties:
                       lastTransitionTime:
                         description: lastTransitionTime is the timestamp corresponding to the last status change of this condition.
