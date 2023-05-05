@@ -49,7 +49,6 @@ spec:
               required:
                 - additionalTrustBundle
                 - baseOSContainerImage
-                - baseOSExtensionsContainerImage
                 - cloudProviderCAData
                 - cloudProviderConfig
                 - clusterDNSIP
@@ -59,7 +58,6 @@ spec:
                 - ipFamilies
                 - kubeAPIServerServingCAData
                 - network
-                - osImageURL
                 - proxy
                 - releaseImage
                 - rootCAData
