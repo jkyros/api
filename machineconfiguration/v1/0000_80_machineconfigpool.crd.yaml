@@ -218,6 +218,19 @@ spec:
               description: MachineConfigPoolStatus is the status for MachineConfigPool resource.
               type: object
               properties:
+                certExpirys:
+                  description: certExpirys keeps track of important certificate expiration data
+                  type: array
+                  items:
+                    description: ceryExpiry contains the bundle name and the expiry date
+                    type: object
+                    properties:
+                      bundle:
+                        type: string
+                      expiry:
+                        type: string
+                      subject:
+                        type: string
                 conditions:
                   description: conditions represents the latest available observations of current state.
                   type: array
