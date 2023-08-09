@@ -185,11 +185,16 @@ spec:
                   items:
                     description: ImageRegustryBundle contains information for writing image registry certificates
                     type: object
+                    required:
+                      - data
+                      - file
                     properties:
                       data:
+                        description: data holds the contents of the bundle that will be written to the file location
                         type: string
                         format: byte
                       file:
+                        description: file holds the name of the file where the bundle will be written to disk
                         type: string
                 imageRegistryBundleUserData:
                   description: imageRegistryBundleUserData is Image Registry Data provided by the user
@@ -197,11 +202,16 @@ spec:
                   items:
                     description: ImageRegustryBundle contains information for writing image registry certificates
                     type: object
+                    required:
+                      - data
+                      - file
                     properties:
                       data:
+                        description: data holds the contents of the bundle that will be written to the file location
                         type: string
                         format: byte
                       file:
+                        description: file holds the name of the file where the bundle will be written to disk
                         type: string
                 images:
                   description: images is map of images that are used by the controller to render templates under ./templates/
@@ -1170,6 +1180,12 @@ spec:
                   items:
                     description: ControllerCertificate contains info about a specific cert.
                     type: object
+                    required:
+                      - bundleFile
+                      - notAfter
+                      - notBefore
+                      - signer
+                      - subject
                     properties:
                       bundleFile:
                         description: bundleFile is the larger bundle a cert comes from

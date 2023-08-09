@@ -79,9 +79,11 @@ type ControllerConfigSpec struct {
 	AdditionalTrustBundle []byte `json:"additionalTrustBundle" protobuf:"bytes,8,opt,name=additionalTrustBundle"`
 
 	// imageRegistryBundleUserData is Image Registry Data provided by the user
+	// +optional
 	ImageRegistryBundleUserData []ImageRegistryBundle `json:"imageRegistryBundleUserData"`
 
 	// imageRegistryBundleData is the ImageRegistryData
+	// +optional
 	ImageRegistryBundleData []ImageRegistryBundle `json:"imageRegistryBundleData"`
 
 	// TODO: Investigate using a ConfigMapNameReference for the PullSecret and OSImageURL
@@ -148,7 +150,11 @@ type ControllerConfigSpec struct {
 
 // ImageRegustryBundle contains information for writing image registry certificates
 type ImageRegistryBundle struct {
+	// file holds the name of the file where the bundle will be written to disk
+	// +kubebuilder:validation:Required
 	File string `json:"file"`
+	// data holds the contents of the bundle that will be written to the file location
+	// +kubebuilder:validation:Required
 	Data []byte `json:"data"`
 }
 
@@ -187,18 +193,23 @@ type ControllerConfigStatus struct {
 // ControllerCertificate contains info about a specific cert.
 type ControllerCertificate struct {
 	// subject is the cert subject
+	// +kubebuilder:validation:Required
 	Subject string `json:"subject"`
 
 	// signer is the  cert Issuer
+	// +kubebuilder:validation:Required
 	Signer string `json:"signer"`
 
 	// notBefore is the lower boundary for validity
+	// +kubebuilder:validation:Required
 	NotBefore string `json:"notBefore"`
 
 	// notAfter is the upper boundary for validity
+	// +kubebuilder:validation:Required
 	NotAfter string `json:"notAfter"`
 
 	// bundleFile is the larger bundle a cert comes from
+	// +kubebuilder:validation:Required
 	BundleFile string `json:"bundleFile"`
 }
 
@@ -409,14 +420,21 @@ type MachineConfigPoolStatus struct {
 	Conditions []MachineConfigPoolCondition `json:"conditions" protobuf:"bytes,8,rep,name=conditions"`
 
 	// certExpirys keeps track of important certificate expiration data
+	// +optional
 	CertExpirys []CertExpiry `json:"certExpirys"`
 }
 
 // ceryExpiry contains the bundle name and the expiry date
 type CertExpiry struct {
-	Bundle  string `json:"bundle"`
+	// bundle is the name of the bundle in which the subject certificate resides
+	// +kubebuilder:validation:Required
+	Bundle string `json:"bundle"`
+	// subject is the subject of the certificate
+	// +kubebuilder:validation:Required
 	Subject string `json:"subject"`
-	Expiry  string `json:"expiry"`
+	// expiry is the date after which the certificate will no longer be valid
+	// +kubebuilder:validation:Required
+	Expiry string `json:"expiry"`
 }
 
 // MachineConfigPoolStatusConfiguration stores the current configuration for the pool, and

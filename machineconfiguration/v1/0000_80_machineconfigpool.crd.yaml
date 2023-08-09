@@ -224,12 +224,19 @@ spec:
                   items:
                     description: ceryExpiry contains the bundle name and the expiry date
                     type: object
+                    required:
+                      - bundle
+                      - expiry
+                      - subject
                     properties:
                       bundle:
+                        description: bundle is the name of the bundle in which the subject certificate resides
                         type: string
                       expiry:
+                        description: expiry is the date after which the certificate will no longer be valid
                         type: string
                       subject:
+                        description: subject is the subject of the certificate
                         type: string
                 conditions:
                   description: conditions represents the latest available observations of current state.

@@ -12,7 +12,10 @@ package v1
 
 // AUTO-GENERATED FUNCTIONS START HERE
 var map_CertExpiry = map[string]string{
-	"": "ceryExpiry contains the bundle name and the expiry date",
+	"":        "ceryExpiry contains the bundle name and the expiry date",
+	"bundle":  "bundle is the name of the bundle in which the subject certificate resides",
+	"subject": "subject is the subject of the certificate",
+	"expiry":  "expiry is the date after which the certificate will no longer be valid",
 }
 
 func (CertExpiry) SwaggerDoc() map[string]string {
@@ -164,7 +167,9 @@ func (ControllerConfigStatusCondition) SwaggerDoc() map[string]string {
 }
 
 var map_ImageRegistryBundle = map[string]string{
-	"": "ImageRegustryBundle contains information for writing image registry certificates",
+	"":     "ImageRegustryBundle contains information for writing image registry certificates",
+	"file": "file holds the name of the file where the bundle will be written to disk",
+	"data": "data holds the contents of the bundle that will be written to the file location",
 }
 
 func (ImageRegistryBundle) SwaggerDoc() map[string]string {
