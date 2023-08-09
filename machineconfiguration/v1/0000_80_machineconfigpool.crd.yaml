@@ -87,9 +87,6 @@ spec:
             spec:
               description: MachineConfigPoolSpec is the spec for MachineConfigPool resource.
               type: object
-              required:
-                - configuration
-                - paused
               properties:
                 configuration:
                   description: The targeted MachineConfig object for the machine config pool.
@@ -220,26 +217,33 @@ spec:
             status:
               description: MachineConfigPoolStatus is the status for MachineConfigPool resource.
               type: object
-              required:
-                - configuration
-                - degradedMachineCount
-                - machineCount
-                - readyMachineCount
-                - unavailableMachineCount
-                - updatedMachineCount
               properties:
+                certExpirys:
+                  description: certExpirys keeps track of important certificate expiration data
+                  type: array
+                  items:
+                    description: ceryExpiry contains the bundle name and the expiry date
+                    type: object
+                    required:
+                      - bundle
+                      - expiry
+                      - subject
+                    properties:
+                      bundle:
+                        description: bundle is the name of the bundle in which the subject certificate resides
+                        type: string
+                      expiry:
+                        description: expiry is the date after which the certificate will no longer be valid
+                        type: string
+                      subject:
+                        description: subject is the subject of the certificate
+                        type: string
                 conditions:
                   description: conditions represents the latest available observations of current state.
                   type: array
                   items:
                     description: MachineConfigPoolCondition contains condition information for an MachineConfigPool.
                     type: object
-                    required:
-                      - lastTransitionTime
-                      - message
-                      - reason
-                      - status
-                      - type
                     properties:
                       lastTransitionTime:
                         description: lastTransitionTime is the timestamp corresponding to the last status change of this condition.
