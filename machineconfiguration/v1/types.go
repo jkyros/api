@@ -78,6 +78,14 @@ type ControllerConfigSpec struct {
 	// +nullable
 	AdditionalTrustBundle []byte `json:"additionalTrustBundle" protobuf:"bytes,8,opt,name=additionalTrustBundle"`
 
+	// imageRegistryBundleUserData is Image Registry Data provided by the user
+	// +optional
+	ImageRegistryBundleUserData []ImageRegistryBundle `json:"imageRegistryBundleUserData"`
+
+	// imageRegistryBundleData is the ImageRegistryData
+	// +optional
+	ImageRegistryBundleData []ImageRegistryBundle `json:"imageRegistryBundleData"`
+
 	// TODO: Investigate using a ConfigMapNameReference for the PullSecret and OSImageURL
 
 	// pullSecret is the default pull secret that needs to be installed
@@ -140,6 +148,16 @@ type ControllerConfigSpec struct {
 	Network *NetworkInfo `json:"network" protobuf:"bytes,20,opt,name=network"`
 }
 
+// ImageRegustryBundle contains information for writing image registry certificates
+type ImageRegistryBundle struct {
+	// file holds the name of the file where the bundle will be written to disk
+	// +kubebuilder:validation:Required
+	File string `json:"file"`
+	// data holds the contents of the bundle that will be written to the file location
+	// +kubebuilder:validation:Required
+	Data []byte `json:"data"`
+}
+
 // IPFamiliesType indicates whether the cluster network is IPv4-only, IPv6-only, or dual-stack
 type IPFamiliesType string
 
@@ -167,6 +185,32 @@ type ControllerConfigStatus struct {
 	// conditions represents the latest available observations of current state.
 	// +optional
 	Conditions []ControllerConfigStatusCondition `json:"conditions" protobuf:"bytes,2,rep,name=conditions"`
+	// controllerCertificates represents the latest available observations of the automatically rotating certificates in the MCO.
+	// +optional
+	ControllerCertificates []ControllerCertificate `json:"controllerCertificates"`
+}
+
+// ControllerCertificate contains info about a specific cert.
+type ControllerCertificate struct {
+	// subject is the cert subject
+	// +kubebuilder:validation:Required
+	Subject string `json:"subject"`
+
+	// signer is the  cert Issuer
+	// +kubebuilder:validation:Required
+	Signer string `json:"signer"`
+
+	// notBefore is the lower boundary for validity
+	// +kubebuilder:validation:Required
+	NotBefore string `json:"notBefore"`
+
+	// notAfter is the upper boundary for validity
+	// +kubebuilder:validation:Required
+	NotAfter string `json:"notAfter"`
+
+	// bundleFile is the larger bundle a cert comes from
+	// +kubebuilder:validation:Required
+	BundleFile string `json:"bundleFile"`
 }
 
 // ControllerConfigStatusCondition contains condition information for ControllerConfigStatus
@@ -374,6 +418,23 @@ type MachineConfigPoolStatus struct {
 	// conditions represents the latest available observations of current state.
 	// +optional
 	Conditions []MachineConfigPoolCondition `json:"conditions" protobuf:"bytes,8,rep,name=conditions"`
+
+	// certExpirys keeps track of important certificate expiration data
+	// +optional
+	CertExpirys []CertExpiry `json:"certExpirys"`
+}
+
+// ceryExpiry contains the bundle name and the expiry date
+type CertExpiry struct {
+	// bundle is the name of the bundle in which the subject certificate resides
+	// +kubebuilder:validation:Required
+	Bundle string `json:"bundle"`
+	// subject is the subject of the certificate
+	// +kubebuilder:validation:Required
+	Subject string `json:"subject"`
+	// expiry is the date after which the certificate will no longer be valid
+	// +kubebuilder:validation:Required
+	Expiry string `json:"expiry"`
 }
 
 // MachineConfigPoolStatusConfiguration stores the current configuration for the pool, and
@@ -434,6 +495,14 @@ const (
 
 	// MachineConfigPoolDegraded is the overall status of the pool based, today, on whether we fail with NodeDegraded or RenderDegraded
 	MachineConfigPoolDegraded MachineConfigPoolConditionType = "Degraded"
+
+	MachineConfigPoolBuildPending MachineConfigPoolConditionType = "BuildPending"
+
+	MachineConfigPoolBuilding MachineConfigPoolConditionType = "Building"
+
+	MachineConfigPoolBuildSuccess MachineConfigPoolConditionType = "BuildSuccess"
+
+	MachineConfigPoolBuildFailed MachineConfigPoolConditionType = "BuildFailed"
 )
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
