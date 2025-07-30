@@ -180,6 +180,9 @@
                         "name": "ImageVolume"
                     },
                     {
+                        "name": "InPlacePodVerticalScaling"
+                    },
+                    {
                         "name": "IngressControllerDynamicConfigurationManager"
                     },
                     {

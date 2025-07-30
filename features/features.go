@@ -100,6 +100,14 @@ var (
 				enableIn(configv1.DevPreviewNoUpgrade, configv1.TechPreviewNoUpgrade).
 				mustRegister()
 
+	FeatureGateInPlacePodVerticalScaling = newFeatureGate("InPlacePodVerticalScaling").
+						reportProblemsToJiraComponent("Pod Autoscaling").
+						contactPerson("jkyros").
+						productScope(kubernetes).
+						enhancementPR("https://github.com/kubernetes/enhancements/issues/1287").
+						enableIn(configv1.DevPreviewNoUpgrade, configv1.TechPreviewNoUpgrade).
+						mustRegister()
+
 	FeatureGateInsightsConfigAPI = newFeatureGate("InsightsConfigAPI").
 					reportProblemsToJiraComponent("insights").
 					contactPerson("tremes").
